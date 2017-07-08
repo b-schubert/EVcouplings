@@ -144,10 +144,10 @@ def update_job_status(config, status=None, stage=None):
     session.commit()
 
     # TODO: remove eventually
-    y = [x.__dict__ for x in session.query(ComputeJob).filter_by(name=job_name).all()]
-    print()
-    print(y)
-    print()
+    # y = [x.__dict__ for x in session.query(ComputeJob).filter_by(name=job_name).all()]
+    # print()
+    # print(y)
+    # print()
     # print(y["status"], y["stage"])
     # print(json.dumps(y[0], indent=2))
     # TODO: remove
