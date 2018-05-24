@@ -86,7 +86,7 @@ def infer_plmc(**kwargs):
             "alphabet", "segments", "ignore_gaps", "iterations",
             "lambda_h", "lambda_J", "lambda_group",
             "scale_clusters",
-            "cpu", "plmc", "reuse_ecs",
+            "cpu", "plmc", "reuse_ecs","sgd",
         ]
     )
 
@@ -212,6 +212,7 @@ def infer_plmc(**kwargs):
             lambda_g=kwargs["lambda_group"],
             cpu=kwargs["cpu"],
             binary=kwargs["plmc"],
+            sgd=kwargs["sgd"]
         )
 
         # save iteration table to file

@@ -278,7 +278,12 @@ couplings:
     # complex (model inference using plmc, postprocessing for complexes)
     protocol: complex
 
+    # specify whether stochastic gradient descent with min-batching should be used
+    # instead of L-BFGS
+    sgd: False
+
     # number of plmc iterations
+    # Note: when using sgd instead, iterations of to be increased (>500)
     iterations: 100
 
     # specify custom alphabet as a string. Gap symbol must be first character

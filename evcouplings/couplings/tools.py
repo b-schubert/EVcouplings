@@ -127,7 +127,7 @@ def run_plmc(alignment, couplings_file, param_file=None,
              focus_seq=None, alphabet=None, theta=None,
              scale=None, ignore_gaps=False, iterations=None,
              lambda_h=None, lambda_J=None, lambda_g=None,
-             cpu=None, binary="plmc"):
+             cpu=None, binary="plmc", sgd=False):
     """
     Run plmc on sequence alignment and store
     files with model parameters and pair couplings.
@@ -181,6 +181,8 @@ def run_plmc(alignment, couplings_file, param_file=None,
         Can also be set to "max".
     binary : str, optional (default: "plmc")
         Path to plmc binary
+    sgd : bool, optional (default: False)
+        Specifies whether stochastic gradient descent with mini-batching should be used for inference
 
     Returns
     -------
@@ -257,6 +259,9 @@ def run_plmc(alignment, couplings_file, param_file=None,
     # Number of cores to use for calculation
     if cpu is not None:
         cmd += ["-n", str(cpu)]
+
+    if sgd:
+        cmd += ["--fast"]
 
     # finally also add input alignment (main parameter)
     cmd += [alignment]
