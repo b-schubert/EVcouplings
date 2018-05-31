@@ -4,7 +4,7 @@ Evolutionary couplings calculation protocols/workflows.
 Authors:
   Thomas A. Hopf
   Anna G. Green (complex couplings)
-  Benjamin Schubert
+  Benjamin Schubert (refactoring, SGD interface)
 """
 
 import string
@@ -86,7 +86,7 @@ def infer_plmc(**kwargs):
             "alphabet", "segments", "ignore_gaps", "iterations",
             "lambda_h", "lambda_J", "lambda_group",
             "scale_clusters",
-            "cpu", "plmc", "reuse_ecs","sgd",
+            "cpu", "plmc", "reuse_ecs", "sgd",
         ]
     )
 

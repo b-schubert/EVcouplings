@@ -3,7 +3,9 @@ Wrappers for tools for calculation of evolutionary
 couplings from sequence alignments.
 
 Authors:
-  Thomas A. Hopf
+  Thomas A. Hopf,
+  Benjamin Schubert (SGD interface)
+
 """
 
 from collections import namedtuple
@@ -17,7 +19,7 @@ from evcouplings.utils.system import (
 )
 
 
-def parse_plmc_log(log):
+def parse_plmc_log(log, sgd=False):
     """
     Parse plmc stderr text output into structured data
 
@@ -25,6 +27,8 @@ def parse_plmc_log(log):
     ----------
     log : str
         stderr output from plmc
+    sgd : bool
+        Flag specifying whether stochastic gradient descent was run (and thus plmc producing a different output)
 
     Returns
     -------
@@ -56,9 +60,14 @@ def parse_plmc_log(log):
         "optimization": re.compile("Gradient optimization: (.+)")
     }
 
-    re_iter = re.compile("(\d+){}".format(
-        "".join(["\s+(\d+\.\d+)"] * 6)
-    ))
+    if sgd:
+        re_iter = re.compile("(\d+){}".format(
+            "".join(["\s+(\d+\.\d+)"] * 5)
+        ))
+    else:
+        re_iter = re.compile("(\d+){}".format(
+            "".join(["\s+(\d+\.\d+)"] * 6)
+        ))
 
     matches = {}
     fields = None
@@ -96,7 +105,11 @@ def parse_plmc_log(log):
 
     valid_seqs, total_seqs = map(int, matches["seqs"])
     eff_samples = float(matches["samples"][0])
-    opt_status = matches["optimization"][0]
+
+    if sgd:
+        opt_status = 0
+    else:
+        opt_status = matches["optimization"][0]
 
     return (
         iter_df,
@@ -287,7 +300,7 @@ def run_plmc(alignment, couplings_file, param_file=None,
         print("stdout:", stdout)
         print("stderr:", stderr)
 
-    iter_df, out_fields = parse_plmc_log(stderr)
+    iter_df, out_fields = parse_plmc_log(stderr, sgd=sgd)
 
     # also check we actually calculated couplings...
     if not valid_file(couplings_file):
